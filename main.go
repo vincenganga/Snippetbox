@@ -33,6 +33,12 @@ func snippetCreate(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Display a form for creating a new snippet..."))
 }
 
+// SnippetCreatePost handler function
+
+func snippetCreatePost(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Save a new snippet..."))
+}
+
 func main() {
 	// http.NewServerMux() function to initialize a new servemux
 	mux := http.NewServeMux()
@@ -40,6 +46,8 @@ func main() {
 	mux.HandleFunc("GET /{$}", home) // Route restricted to exact match of "/"
 	mux.HandleFunc("GET /snippet/view/{id}", snippetView) // Wildcard segment
 	mux.HandleFunc("GET /snippet/create", snippetCreate)
+	// Restrict the route to acting on POST requests only
+	mux.HandleFunc("POST /snippet/create", snippetCreatePost)
 
 	log.Print("Starting server on :4000")
 
