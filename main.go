@@ -9,6 +9,8 @@ import (
 
 // Home handler function 
 func home(w http.ResponseWriter, r *http.Request) {
+	// Custom header
+	w.Header().Add("Server","Go")
 	w.Write([]byte("Hello from Snippetbox"))
 }
 
@@ -23,9 +25,7 @@ func snippetView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// fmt.Sprintf() to interpolate the id value with a message and write it as a HTTP response
-	msg := fmt.Sprintf("Display a specific snippet with ID %d...", id)
-	w.Write([]byte(msg))
+	fmt.Fprintf(w, "Display a specific snippet with ID %d...", id)
 }
 
 // SnippetCreate handler function
@@ -34,8 +34,9 @@ func snippetCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 // SnippetCreatePost handler function
-
 func snippetCreatePost(w http.ResponseWriter, r *http.Request) {
+	// Custom HTTP response
+	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte("Save a new snippet..."))
 }
 
