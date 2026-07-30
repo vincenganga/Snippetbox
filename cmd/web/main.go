@@ -8,6 +8,15 @@ import (
 func main() {
 	// http.NewServerMux() function to initialize a new servemux
 	mux := http.NewServeMux()
+
+	// file server to serve static files from the ui/static directory
+	fileServer := http.FileServer(http.Dir("./ui/static/"))
+
+	// mux.Handle() function to register the file server as the handler for
+	// URL paths starting with /static/
+	// http.StripPrefix() function to remove the /static prefix from the request URL path
+	mux.Handle("GET /static/", http.StripPrefix("/static", fileServer))
+
 	// Restrict all three routes to acting on GET requests only
 	mux.HandleFunc("GET /{$}", home)
 	mux.HandleFunc("GET /snippet/view/{id}", snippetView)

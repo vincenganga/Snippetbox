@@ -16,6 +16,7 @@ func home(w http.ResponseWriter, r *http.Request){
 	// file containing the base template must be listed first
 	files :=[]string{
 		"./ui/html/base.html",
+		"./ui/html/partials/nav.html",
 		"./ui/html/pages/home.html",
 	}
 	// template.ParseFiles() to read the template files and store them in a template set
