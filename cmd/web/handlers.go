@@ -2,6 +2,8 @@ package main
 
 import(
 	"fmt"
+	"html/template"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -9,7 +11,29 @@ import(
 func home(w http.ResponseWriter, r *http.Request){
 	// Custom header
 	w.Header().Add("Server", "Go")
-	w.Write([]byte("Hello from Snippetbox"))
+
+	// files slice to hold the paths of the template files
+	// file containing the base template must be listed first
+	files :=[]string{
+		"./ui/html/base.html",
+		"./ui/html/pages/home.html",
+	}
+	// template.ParseFiles() to read the template files and store them in a template set
+	// ... is used to expand the slice into a list of arguments
+	// http.Error() to send a 500 Internal Server Error response if there is an error
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		log.Print(err.Error())
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	// ts.ExecuteTemplate() to execute the base template, passing in nil as dynamic data
+	err = ts.ExecuteTemplate(w, "base", nil)
+	if err != nil {
+		log.Print(err.Error())
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
 }
 
 func snippetView(w http.ResponseWriter,r *http.Request){
